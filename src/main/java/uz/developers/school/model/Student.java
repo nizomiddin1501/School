@@ -23,7 +23,7 @@ public class Student {
     private String phoneNumber;
 
     @ManyToOne
-    private Groups groups;
+    private Group groups;
 
     @ManyToMany
     private List<Mark> marks;

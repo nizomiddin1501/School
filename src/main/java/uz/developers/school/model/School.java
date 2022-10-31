@@ -22,6 +22,6 @@ public class School {
     private Address address;
 
     @OneToMany
-    private List<Groups> groups;
+    private List<Group> groups;
 
 }

@@ -1,9 +1,9 @@
 package uz.developers.school.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import uz.developers.school.model.Groups;
+import uz.developers.school.model.Group;
 
-public interface GroupRepository extends JpaRepository<Groups,Integer> {
+public interface GroupRepository extends JpaRepository<Group,Integer> {
 
 
 }

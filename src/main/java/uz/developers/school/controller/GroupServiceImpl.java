@@ -2,7 +2,7 @@ package uz.developers.school.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import uz.developers.school.model.Groups;
+import uz.developers.school.model.Group;
 import uz.developers.school.payload.GroupDto;
 import uz.developers.school.repository.GroupRepository;
 
@@ -11,21 +11,21 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/group")
-public class GroupController {
+public class GroupServiceImpl {
 
     @Autowired
     GroupRepository groupRepository;
 
 
     @GetMapping
-    public List<Groups> getGroups(){
-        List<Groups> groupsList = groupRepository.findAll();
+    public List<Group> getGroups(){
+        List<Group> groupsList = groupRepository.findAll();
         return groupsList;
     }
 
     @PostMapping
     public String addGroup(@RequestBody GroupDto groupDto){
-        Groups groups = new Groups();
+        Group groups = new Group();
         groups.setName(groupDto.getName());
         groupRepository.save(groups);
         return "Group is added";
@@ -33,9 +33,9 @@ public class GroupController {
 
     @PutMapping("/{id}")
     public String editGroup(@PathVariable Integer id,@RequestBody GroupDto groupDto){
-        Optional<Groups> optionalGroups = groupRepository.findById(id);
+        Optional<Group> optionalGroups = groupRepository.findById(id);
         if (optionalGroups.isPresent()){
-            Groups groups = optionalGroups.get();
+            Group groups = optionalGroups.get();
             groups.setName(groupDto.getName());
             groupRepository.save(groups);
             return "Group is edoted";

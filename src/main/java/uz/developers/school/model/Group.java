@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Groups {
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

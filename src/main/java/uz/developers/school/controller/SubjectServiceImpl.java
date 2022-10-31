@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class SubjectController {
+public class SubjectServiceImpl {
 
     @Autowired
     SubjectRepository subjectRepository;

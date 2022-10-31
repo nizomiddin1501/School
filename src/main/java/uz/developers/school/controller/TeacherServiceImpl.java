@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class TeacherController {
+public class TeacherServiceImpl {
 
     @Autowired
     TeacherRepository teacherRepository;
