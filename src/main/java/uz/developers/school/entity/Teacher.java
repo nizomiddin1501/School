@@ -1,23 +1,29 @@
-package uz.developers.school.model;
+package uz.developers.school.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Subject {
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    private String firstName;
 
-    @ManyToMany
-    private List<Student> students;
+    private String lastName;
+
+    private String phoneNumber;
+
+    @ManyToOne
+    private Subject subject;
+
+    @ManyToOne
+    private TimeTable timeTable;
 }

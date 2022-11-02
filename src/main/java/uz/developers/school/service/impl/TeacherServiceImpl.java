@@ -1,53 +1,64 @@
 package uz.developers.school.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import uz.developers.school.model.Teacher;
+import org.springframework.stereotype.Service;
+import uz.developers.school.entity.Teacher;
+import uz.developers.school.payload.ApiResponce;
 import uz.developers.school.payload.TeacherDto;
 import uz.developers.school.repository.TeacherRepository;
+import uz.developers.school.service.TeacherService;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-public class TeacherServiceImpl {
-
+@Service
+public class TeacherServiceImpl implements TeacherService {
     @Autowired
     TeacherRepository teacherRepository;
 
 
-    @GetMapping("/teacher")
-    public List<Teacher> getTeacher(){
-        List<Teacher> teachers = teacherRepository.findAll();
-        return teachers;
+    @Override
+    public List<Teacher> getTeachers() {
+        return teacherRepository.findAll();
+
     }
 
-    @PostMapping("/teacher")
-    public String addTeacher(@RequestBody TeacherDto teacherDto){
+    @Override
+    public Teacher getTeacher(Integer id){
+        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
+        if (optionalTeacher.isPresent()) {
+            return optionalTeacher.get();
+        }
+        return null;
+    }
+
+    @Override
+    public ApiResponce addTeacher(TeacherDto teacherDto) {
         Teacher teacher = new Teacher();
         teacher.setFirstName(teacherDto.getFirstName());
         teacher.setLastName(teacherDto.getLastName());
         teacher.setPhoneNumber(teacher.getPhoneNumber());
         teacherRepository.save(teacher);
-        return "Teacher is added";
+        return new ApiResponce("Teacher is added", true);
     }
 
-    @PutMapping("/teacher/{id}")
-    public String editTeacher(@PathVariable Integer id, @RequestBody TeacherDto teacherDto){
+    @Override
+    public ApiResponce editTeacher(Integer id, TeacherDto teacherDto) {
         Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
-        if (optionalTeacher.isPresent()) {
-            Teacher teacher = optionalTeacher.get();
-            teacher.setFirstName(teacherDto.getFirstName());
-            teacher.setLastName(teacherDto.getLastName());
-            teacher.setPhoneNumber(teacher.getPhoneNumber());
-            teacherRepository.save(teacher);
-            return "Teacher is edited";
+        if (optionalTeacher.isEmpty()) {
+            return new ApiResponce("Teacher is not found", false);
         }
-        return "Teacher is not found";
+        Teacher teacher = optionalTeacher.get();
+        teacher.setFirstName(teacherDto.getFirstName());
+        teacher.setLastName(teacherDto.getLastName());
+        teacher.setPhoneNumber(teacher.getPhoneNumber());
+        teacherRepository.save(teacher);
+        return new ApiResponce("Teacher is edited", true);
     }
-    @DeleteMapping("/teacher/{id}")
-    public String deleteTeacher(@PathVariable Integer id){
+
+    @Override
+    public ApiResponce deleteTeacher( Integer id) {
         teacherRepository.deleteById(id);
-        return "Teacher is deleted";
+        return new ApiResponce("Teacher is deleted",true);
     }
 }

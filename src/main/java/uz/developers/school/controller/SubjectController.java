@@ -4,34 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.developers.school.entity.TimeTable;
+import uz.developers.school.entity.Subject;
 import uz.developers.school.payload.ApiResponce;
-import uz.developers.school.payload.TimeTableDto;
-import uz.developers.school.service.TimeTableService;
+import uz.developers.school.payload.SubjectDto;
+import uz.developers.school.service.SubjectService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/timetable")
-public class TimeTableController {
+@RequestMapping("/api/subject")
+public class SubjectController {
 
     @Autowired
-    TimeTableService timeTableService;
+    SubjectService subjectService;
 
     @GetMapping
-    public ResponseEntity<List<TimeTable>> getTimeTables() {
-        List<TimeTable> timeTables = timeTableService.getTimeTables();
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(timeTables);
+    public ResponseEntity<List<Subject>> getSubjects() {
+        List<Subject> subjects = subjectService.getSubjects();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(subjects);
     }
 
     @GetMapping("/{id}")
-    public TimeTable getTimeTable(@PathVariable Integer id) {
-        return timeTableService.getTimeTable(id);
+    public Subject getSubject(@PathVariable Integer id) {
+        return subjectService.getSubject(id);
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponce> addTimeTable(@RequestBody TimeTableDto timeTableDto) {
-        ApiResponce apiResponce = timeTableService.addTimeTable(timeTableDto);
+    public ResponseEntity<ApiResponce> addSubject(@RequestBody SubjectDto subjectDto) {
+        ApiResponce apiResponce = subjectService.addSubject(subjectDto);
         if (apiResponce.isSuccess()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(apiResponce);
         }
@@ -40,8 +40,8 @@ public class TimeTableController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponce> editTimeTable(@PathVariable Integer id, @RequestBody TimeTableDto timeTableDto) {
-        ApiResponce apiResponce = timeTableService.editTimeTable(id,timeTableDto);
+    public ResponseEntity<ApiResponce> editSubject(@PathVariable Integer id, @RequestBody SubjectDto subjectDto) {
+        ApiResponce apiResponce = subjectService.editSubject(id,subjectDto);
         if (apiResponce.isSuccess()) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(apiResponce);
         }
@@ -49,13 +49,11 @@ public class TimeTableController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTimeTable(@PathVariable Integer id) {
-        ApiResponce apiResponce = timeTableService.deleteTimeTable(id);
+    public ResponseEntity<?> deleteSubject(@PathVariable Integer id) {
+        ApiResponce apiResponce = subjectService.deleteSubject(id);
         if (apiResponce.isSuccess()) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(apiResponce);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiResponce);
     }
-
-
 }

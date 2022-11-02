@@ -1,16 +1,18 @@
-package uz.developers.school.model;
+package uz.developers.school.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class School {
+public class Mark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +20,5 @@ public class School {
 
     private String name;
 
-    @OneToOne
-    private Address address;
-
-    @OneToMany
-    private List<Group> groups;
 
 }

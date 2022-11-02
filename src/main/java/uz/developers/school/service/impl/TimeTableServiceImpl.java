@@ -1,52 +1,59 @@
 package uz.developers.school.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import uz.developers.school.model.TimeTable;
+import org.springframework.stereotype.Service;
+import uz.developers.school.entity.TimeTable;
+import uz.developers.school.payload.ApiResponce;
 import uz.developers.school.payload.TimeTableDto;
 import uz.developers.school.repository.TimeTableRepository;
+import uz.developers.school.service.TimeTableService;
+
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-public class TimeTableServiceImpl {
+@Service
+public class TimeTableServiceImpl implements TimeTableService {
 
     @Autowired
     TimeTableRepository timeTableRepository;
 
-
-    @GetMapping("/timeTable")
+    @Override
     public List<TimeTable> getTimeTables(){
-        List<TimeTable> timeTableList = timeTableRepository.findAll();
-        return timeTableList;
+        return timeTableRepository.findAll();
     }
 
-    @PostMapping("/timeTable")
-    public String addTimeTable(@RequestBody TimeTableDto timeTableDto){
+    @Override
+    public TimeTable getTimeTable(Integer id){
+        Optional<TimeTable> optionalTimeTable = timeTableRepository.findById(id);
+        if (optionalTimeTable.isPresent()) {
+            return optionalTimeTable.get();
+        }
+        return null;
+    }
+
+    @Override
+    public ApiResponce addTimeTable(TimeTableDto timeTableDto){
         TimeTable timeTable = new TimeTable();
         timeTable.setName(timeTableDto.getName());
         timeTableRepository.save(timeTable);
-        return "TimeTable is added";
+        return new ApiResponce("TimeTable is added",true);
     }
-
-    @PutMapping("/timeTable/{id}")
-    public String editTimeTable(@PathVariable Integer id,@RequestBody TimeTableDto timeTableDto){
+    @Override
+    public ApiResponce editTimeTable(Integer id, TimeTableDto timeTableDto){
         Optional<TimeTable> optionalTimeTable = timeTableRepository.findById(id);
-        if (optionalTimeTable.isPresent()) {
-            TimeTable timeTable = optionalTimeTable.get();
-            timeTable.setName(timeTableDto.getName());
-            timeTableRepository.save(timeTable);
-            return "TimeTable is edited";
-
+        if (optionalTimeTable.isEmpty()) {
+            return new ApiResponce("TimeTable is not found",false);
         }
-        return "TimeTable is not found";
+        TimeTable timeTable = optionalTimeTable.get();
+        timeTable.setName(timeTableDto.getName());
+        timeTableRepository.save(timeTable);
+        return new ApiResponce("TimeTable is edited",true);
     }
-    @DeleteMapping("/timeTable/{id}")
-    public String deleteTimeTable(@PathVariable Integer id){
+
+    @Override
+    public ApiResponce deleteTimeTable(Integer id){
         timeTableRepository.deleteById(id);
-        return "TimeTable is deleted";
+        return new ApiResponce("TimeTable is deleted",true);
     }
-
-
 }

@@ -1,5 +1,4 @@
-package uz.developers.school.model;
-
+package uz.developers.school.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,21 +10,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Student {
+public class Subject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String phoneNumber;
-
-    @ManyToOne
-    private Group groups;
+    private String name;
 
     @ManyToMany
-    private List<Mark> marks;
-
+    private List<Student> students;
 }

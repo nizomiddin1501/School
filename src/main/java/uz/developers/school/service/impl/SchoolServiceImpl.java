@@ -1,28 +1,31 @@
 package uz.developers.school.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import uz.developers.school.model.Address;
-import uz.developers.school.model.School;
+import org.springframework.stereotype.Service;
+import uz.developers.school.entity.Address;
+import uz.developers.school.entity.School;
 import uz.developers.school.payload.ApiResponce;
 import uz.developers.school.payload.SchoolDto;
 import uz.developers.school.repository.AddressRepository;
 import uz.developers.school.repository.SchoolRepository;
+import uz.developers.school.service.SchoolService;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-public class SchoolServiceImpl {
+@Service
+public class SchoolServiceImpl implements SchoolService {
     @Autowired
     SchoolRepository schoolRepository;
     @Autowired
     AddressRepository addressRepository;
 
+    @Override
     public List<School> getSchools() {
         return schoolRepository.findAll();
     }
 
+    @Override
     public School getSchool(Integer id){
         Optional<School> optionalSchool = schoolRepository.findById(id);
         if (optionalSchool.isPresent()) {
@@ -31,6 +34,7 @@ public class SchoolServiceImpl {
         return null;
     }
 
+    @Override
     public ApiResponce addSchool(SchoolDto schoolDto) {
         Address address = new Address();
         address.setCity(schoolDto.getCity());
@@ -45,7 +49,7 @@ public class SchoolServiceImpl {
         return new ApiResponce("School is added",true);
     }
 
-
+    @Override
     public ApiResponce editSchool(Integer id, SchoolDto schoolDto) {
         Optional<School> optionalSchool = schoolRepository.findById(id);
         if (optionalSchool.isEmpty()){
@@ -66,6 +70,7 @@ public class SchoolServiceImpl {
         return new ApiResponce("School is edited",true);
     }
 
+    @Override
     public ApiResponce deleteSchool(Integer id) {
         schoolRepository.deleteById(id);
         return new ApiResponce("School is deleted",true);

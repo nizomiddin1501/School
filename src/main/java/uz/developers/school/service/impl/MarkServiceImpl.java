@@ -3,25 +3,29 @@ package uz.developers.school.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-import uz.developers.school.model.Mark;
+import uz.developers.school.entity.Mark;
 import uz.developers.school.payload.ApiResponce;
 import uz.developers.school.payload.MarkDto;
 import uz.developers.school.repository.MarkRepository;
+import uz.developers.school.service.MarkService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MarkServiceImpl {
+public class MarkServiceImpl implements MarkService {
 
     @Autowired
     MarkRepository markRepository;
 
 
+    @Override
     public List<Mark> getMarks(){
         return markRepository.findAll();
 
     }
+
+    @Override
     public Mark getMark(Integer id){
         Optional<Mark> optionalMark = markRepository.findById(id);
         if (optionalMark.isPresent()) {
@@ -30,6 +34,7 @@ public class MarkServiceImpl {
         return null;
     }
 
+    @Override
     public ApiResponce addMark( MarkDto markDto){
         Mark mark = new Mark();
         mark.setName(markDto.getName());
@@ -38,6 +43,7 @@ public class MarkServiceImpl {
 
     }
 
+    @Override
     public ApiResponce editMark(Integer id, MarkDto markDto){
         Optional<Mark> optionalMark = markRepository.findById(id);
         if (optionalMark.isEmpty()) {
@@ -48,8 +54,9 @@ public class MarkServiceImpl {
         markRepository.save(mark);
         return new ApiResponce("Mark is edited",true);
     }
-    @DeleteMapping("/mark/{id}")
-    public ApiResponce deleteMark(@PathVariable Integer id){
+
+    @Override
+    public ApiResponce deleteMark(Integer id){
         markRepository.deleteById(id);
         return new ApiResponce("Mark is deleted",true);
     }

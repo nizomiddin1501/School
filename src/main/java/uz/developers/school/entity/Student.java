@@ -1,4 +1,5 @@
-package uz.developers.school.model;
+package uz.developers.school.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,17 +11,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class TimeTable {
-
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    private String firstName;
 
-    @OneToMany
-    private List<Subject> subjects;
+    private String lastName;
 
+    private String phoneNumber;
 
+    @ManyToOne
+    private Group groups;
+
+    @ManyToMany
+    private List<Mark> marks;
 
 }

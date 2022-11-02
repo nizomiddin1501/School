@@ -1,28 +1,26 @@
-package uz.developers.school.model;
-
+package uz.developers.school.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Address {
+public class TimeTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String city;
+    private String name;
 
-    @Column(nullable = false)
-    private String district;
+    @OneToMany
+    private List<Subject> subjects;
 
-    @Column(nullable = false)
-    private String street;
+
 
 }

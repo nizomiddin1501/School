@@ -1,46 +1,59 @@
 package uz.developers.school.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import uz.developers.school.model.Subject;
+import org.springframework.stereotype.Service;
+import uz.developers.school.entity.Subject;
+import uz.developers.school.payload.ApiResponce;
 import uz.developers.school.payload.SubjectDto;
 import uz.developers.school.repository.SubjectRepository;
+import uz.developers.school.service.SubjectService;
 
 import java.util.List;
 import java.util.Optional;
-//todo Service ga aylantirish shu classdan qolgan
-
-@RestController
-public class SubjectServiceImpl {
+@Service
+public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     SubjectRepository subjectRepository;
 
 
+    @Override
     public List<Subject> getSubjects(){
        return subjectRepository.findAll();
 
     }
-
-    public String addSubject(SubjectDto subjectDto){
+    @Override
+    public Subject getSubject(Integer id){
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+        if (optionalSubject.isPresent()) {
+            return optionalSubject.get();
+        }
+        return null;
+    }
+    @Override
+    public ApiResponce addSubject(SubjectDto subjectDto){
         Subject subject = new Subject();
         subject.setName(subjectDto.getName());
         subjectRepository.save(subject);
-        return "Subject is added";
+        return new ApiResponce("Subject is added",true);
     }
 
-    public String editSubject(Integer id, SubjectDto subjectDto){
+    @Override
+    public ApiResponce editSubject(Integer id, SubjectDto subjectDto){
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
-        if (optionalSubject.isPresent()) {
-            Subject subject = optionalSubject.get();
-            subject.setName(subjectDto.getName());
-            subjectRepository.save(subject);
-            return "Subject is edited";
+        if (optionalSubject.isEmpty()) {
+
+            return new ApiResponce("Subject is not found",false);
         }
-        return "Subject not found";
+        Subject subject = optionalSubject.get();
+        subject.setName(subjectDto.getName());
+        subjectRepository.save(subject);
+        return new ApiResponce("Subject is edited",true);
     }
-    public String deleteSubject(Integer id){
+
+    @Override
+    public ApiResponce deleteSubject(Integer id){
         subjectRepository.deleteById(id);
-        return "Subject is deleted";
+        return new ApiResponce("Subject is deleted",true);
     }
 }
